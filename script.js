@@ -2,6 +2,10 @@ const categoryContainer = document.getElementById("category-container")
 
 const newsContainer = document.getElementById("newsContainer")
 
+const  bookmarkContainer = document.getElementById("bookmarkContainer")
+
+let bookmarks = [] 
+
 const loadCategory = () => {
     fetch("https://news-api-fs.vercel.app/api/categories")
         .then((res) => res.json())
@@ -35,6 +39,7 @@ const showCategory = (categories) => {   //
                    loadNewsByCategory(e.target.id)
 
                  }
+                 
             })
 
 };
@@ -56,22 +61,70 @@ const loadNewsByCategory = (categoryId)=> {
 const showNewsByCategory = (articles) => {
     console.log(articles)
 
-    newsContainer.innerHTML = ""
+    newsContainer.innerHTML = "" 
+
      articles.forEach(article => {
         newsContainer.innerHTML +=`
-        <div>
+        <div class ="border border-gray-400 rounded-lg">
            <div>
-           <img src = "${article.image.srcset[5].url}"
+           <img class="rounded-lg" src = "${article.image.srcset[5].url}"
            </div>
-          <h1>${article.title} </h1>
-          <p>${article.time}</p>
+            <div id="${article.id}" class="p-2">
+                <h1 class = "font-bold">${article.title} </h1>
+                 <p class ="text-sm">${article.time}</p>
+                 <button class="btn">Bookmark</button>
+            </div>
         </div>
         `
      })
+
+     
+}
+
+newsContainer.addEventListener('click', (e)=>{
+    // console.log(e.target)
+     if(e.target.innerText === 'Bookmark'){
+         handleBookmarks(e);
+     }
+})
+
+const handleBookmarks = (e) =>{
+        const title = e.target.parentNode.children[0].innerText
+        const id = e.target.parentNode.id
+        //console.log(id);
+
+        bookmarks.push({
+            title: title,
+            id: id
+        })
+       // console.log(Bookmarks)
+       showBookmarks(bookmarks)
+}
+
+const showBookmarks = (bookmarks)=>{
+
+    console.log(bookmarks)
+       bookmarkContainer.innerHTML=""
+
+      bookmarks.forEach(bookmark =>{
+              bookmarkContainer.innerHTML += `
+               <div class="p-3 border border-gray-600 rounded-sm my-2">
+                   <h1>${bookmark.title}</h1>
+                   <button  onclick="handleDeleteBookmark('${bookmark.id}')"  class = "btn btn-xs">delete</button>
+               </div>
+              `
+      })
+}
+
+const handleDeleteBookmark = (bookmarkId) =>{
+     
+     const filteredBookmarks = bookmarks.filter(bookmark => bookmark.id !== bookmarkId)
+     bookmarks =filteredBookmarks
+     showBookmarks(bookmarks)
 }
 
 loadCategory();
-loadNewsByCategory(`main`);
+loadNewsByCategory(`main`); //show main page direct
 
 
 
