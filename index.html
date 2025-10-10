@@ -29,7 +29,7 @@
         </div>
         <nav class="border-b border-gray-200">
             <ul id="category-container" class="flex gap-10 text-lg max-w-7xl mx-auto px-5">
-                 
+
             </ul>
         </nav>
     </header>
@@ -37,21 +37,37 @@
     <main class="max-w-7xl mx-auto px-5 mt-4 grid grid-cols-4 gap-5">
 
         <div id="newsContainer" class=" grid grid-cols-3 gap-5 col-span-3">
+            <div class="bg-red-500 text-white p-3">Loading.......</div>
 
         </div>
         <div class="col-span-1 border border-gray-300 rounded-lg overflow-hidden">
-             <div class="bg-red-500  text-white p-4 flex justify-around">
+            <div class="bg-red-500  text-white p-4 flex justify-around">
                 <h1>Bookmark</h1>
                 <p id="bookmarkCount">0</p>
-             </div>
+            </div>
 
-             <div  id="bookmarkContainer" class="">
+            <div id="bookmarkContainer" class="">
 
 
-             </div>
+            </div>
         </div>
-        
+
     </main>
+
+    
+    <dialog id="news-details-modal" class="modal">
+        <div class="modal-box">
+             <div id="modalContainer">
+
+             </div>
+            <div class="modal-action">
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button class="btn">Close</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
 
     <script src="./script.js"></script>
 </body>

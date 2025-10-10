@@ -6,6 +6,10 @@ const  bookmarkContainer = document.getElementById("bookmarkContainer")
 
 const bookmarkCount = document.getElementById("bookmarkCount")
 
+const newsDetailsModal = document.getElementById('news-details-modal')
+
+const modalContainer = document.getElementById('modalContainer')
+
 let bookmarks = [] 
 
 const loadCategory = () => {
@@ -37,6 +41,7 @@ const showCategory = (categories) => {   //
                   // adding border bottom  indicator----------------->
                  if(e.target.localName === 'li'){   
                     // console.log(e.target.id)
+                    showLoading()
                     e.target.classList.add('border-b-4');
                    loadNewsByCategory(e.target.id)
 
@@ -56,12 +61,15 @@ const loadNewsByCategory = (categoryId)=> {
         showNewsByCategory(data.articles)
     })
     .catch(err =>{
-        console.log(err)
+      showError()
     })
 }
 
 const showNewsByCategory = (articles) => {
-    console.log(articles)
+    if(articles.length ===0 ){
+        showEmptyMessage()
+        return
+    }
 
     newsContainer.innerHTML = "" 
 
@@ -75,6 +83,7 @@ const showNewsByCategory = (articles) => {
                 <h1 class = "font-bold">${article.title} </h1>
                  <p class ="text-sm">${article.time}</p>
                  <button class="btn">Bookmark</button>
+                 <button class="btn">View details</button>
             </div>
         </div>
         `
@@ -87,6 +96,10 @@ newsContainer.addEventListener('click', (e)=>{
     // console.log(e.target)
      if(e.target.innerText === 'Bookmark'){
          handleBookmarks(e);
+     }
+     if(e.target.innerText === 'View details'){
+        
+      handleViewDetails(e)
      }
 })
 
@@ -102,6 +115,12 @@ const handleBookmarks = (e) =>{
        // console.log(Bookmarks)
        showBookmarks(bookmarks)
        bookmarkCount.innerText = bookmarks.length  // count the book mark 
+}
+
+
+const handleViewBook = (e)=>{
+         const id = e.target.parentNode.id
+         console.log(id);
 }
 
 const showBookmarks = (bookmarks)=>{
@@ -124,6 +143,48 @@ const handleDeleteBookmark = (bookmarkId) =>{
      const filteredBookmarks = bookmarks.filter(bookmark => bookmark.id !== bookmarkId)
      bookmarks =filteredBookmarks
      showBookmarks(bookmarks)
+}
+
+handleViewDetails = (e)=>{   ///api call
+        const id = e.target.parentNode.id
+        // console.log(id)
+        // newsDetailsModal.showModal()
+        fetch(`https://news-api-fs.vercel.app/api/news/${id}`)
+        .then((res) => res.json())
+        .then((data)=> {
+               showDetailsNews(data.article)
+        })
+        .catch(err => {  // handle error
+            console.log(err)
+        })
+}
+  
+//show in screen
+const showDetailsNews = (article)=>{
+     newsDetailsModal.showModal()
+     console.log(article)
+
+     modalContainer.innerHTML =`
+       <h1>${article.title} </h1>
+       <img src="${article.images[0].url}"/>
+        <p>${article.content.join(" ")}</p>
+     `
+}
+
+const showLoading = ()=>{
+    newsContainer.innerHTML = `
+       <div class="bg-red-500 text-white p-3">Loading.......</div>
+    `
+}
+
+const showError = () =>{
+     newsContainer.innerHTML = `
+       <div class="bg-red-500 text-white p-3">Something went wrong</div>`
+}
+
+const showEmptyMessage = () =>{
+  newsContainer.innerHTML = `
+       <div class="bg-orange-500 text-white p-3">No news fount for this category</div>`
 }
 
 loadCategory();
