@@ -4,6 +4,8 @@ const newsContainer = document.getElementById("newsContainer")
 
 const  bookmarkContainer = document.getElementById("bookmarkContainer")
 
+const bookmarkCount = document.getElementById("bookmarkCount")
+
 let bookmarks = [] 
 
 const loadCategory = () => {
@@ -99,6 +101,7 @@ const handleBookmarks = (e) =>{
         })
        // console.log(Bookmarks)
        showBookmarks(bookmarks)
+       bookmarkCount.innerText = bookmarks.length  // count the book mark 
 }
 
 const showBookmarks = (bookmarks)=>{
