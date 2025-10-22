@@ -1,2 +1,2 @@
 This is developed by me with some help of others sourse.
-API calling and creating those kind of things kinda interesting for me
+API calling and creating those kind of things kinda interesting for me..
