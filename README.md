@@ -1,2 +1,3 @@
 This is developed by me with some help of others sourse.
 API calling and creating those kind of things kinda interesting for me...
+![image alt](https://github.com/ChiranjithChkz/BBC-Bangla-News/blob/main/Screenshot%202025-11-03%20132934.png?raw=true)
